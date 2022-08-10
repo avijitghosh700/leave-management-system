@@ -1,0 +1,11 @@
+@import './var.module';
+@import './mixin';
+
+html,
+body {
+  height: 100%;
+}
+
+main.main {
+  height: 100vh;
+}

@@ -1,0 +1,40 @@
+@import '../../styles/var.module';
+@import '../../styles/mixin';
+
+.Auth {
+  position: relative;
+  height: 100%;
+
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: $dark;
+  }
+
+  &__kite {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    & > * {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__formWrapper {
+    position: relative;
+    width: 100%;
+    max-width: 300px;
+    padding: 20px;
+    background-color: #fff;
+    z-index: 100;
+  }
+}

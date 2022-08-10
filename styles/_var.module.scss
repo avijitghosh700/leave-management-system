@@ -1,0 +1,10 @@
+$primary: #1BEC26;
+$dark: #333;
+
+// Gradients
+$primary-gradient: linear-gradient(135deg, #0e6c18 0%, #1ded27 100%);
+
+:export {
+  primary: $primary;
+  primaryGradient: $primary-gradient;
+}
