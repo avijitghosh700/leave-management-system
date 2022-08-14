@@ -26,6 +26,8 @@ import * as Yup from "yup";
 
 import { useAuth } from "../../context/AuthContext";
 
+import { FcGoogle } from "react-icons/fc";
+
 import AuthStyles from "./Auth.module.scss";
 
 const signInSchema = Yup.object().shape({
@@ -40,11 +42,22 @@ const signUpSchema = Yup.object().shape({
   password: Yup.string()
     .min(6, "Password is too short - should be 6 chars minimum")
     .required("Password is required."),
-  confirmPassword: Yup.string().required("Confirm password is required."),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password"), null], "Passwords must match")
+    .required("Confirm password is required."),
 });
 
 const Auth: NextPage = () => {
-  const { signInWithGoogle, logout, loading, user } = useAuth();
+  const {
+    signInWithGoogle,
+    signInWithPassword,
+    signUpWithPassword,
+    logout,
+    signInLoading,
+    signUpLoading,
+    googleAuthLoading,
+    user,
+  } = useAuth();
 
   const [signInValues /*setSignInValues*/] = React.useState<FormikValues>({
     email: "",
@@ -57,8 +70,20 @@ const Auth: NextPage = () => {
     confirmPassword: "",
   });
 
+  const signInUsingEmailAndPassword = (credentials: Record<string, string>) => {
+    signInWithPassword(credentials);
+  };
+
+  const signUpUsingEmailAndPassword = (credentials: Record<string, string>) => {
+    signUpWithPassword(credentials);
+  };
+
+  React.useEffect(() => {
+    console.log(user);
+  }, [user]);
+
   return (
-    <Flex as="section" h={"100%"} minH={450} alignItems={"center"} className={`${AuthStyles.Auth}`}>
+    <Flex as="section" h={"100%"} minH={450} className={`${AuthStyles.Auth}`}>
       <Box className={`${AuthStyles.Auth__kite}`}>
         <Image src="kite-bg-01.svg" />
       </Box>
@@ -75,10 +100,10 @@ const Auth: NextPage = () => {
       >
         <GridItem w={"100%"}>
           <Box className={`${AuthStyles.Auth__formWrapper}`} mx="auto">
-            <Tabs isFitted colorScheme={"green"}>
+            <Tabs isFitted colorScheme={"custom.primary"}>
               <TabList>
-                <Tab>Sign in</Tab>
-                <Tab>Sign up</Tab>
+                <Tab fontWeight={500}>Sign in</Tab>
+                <Tab fontWeight={500}>Sign up</Tab>
               </TabList>
 
               <TabPanels>
@@ -86,7 +111,7 @@ const Auth: NextPage = () => {
                   <Formik
                     initialValues={signInValues}
                     validationSchema={signInSchema}
-                    onSubmit={console.log}
+                    onSubmit={signInUsingEmailAndPassword}
                   >
                     {({ touched, errors }) => {
                       return (
@@ -115,7 +140,11 @@ const Auth: NextPage = () => {
                           </Field>
 
                           <ButtonGroup w="100%" justifyContent={"end"}>
-                            <Button type="submit" colorScheme="green">
+                            <Button
+                              type="submit"
+                              colorScheme="custom.primary"
+                              isLoading={signInLoading}
+                            >
                               Sign in
                             </Button>
                           </ButtonGroup>
@@ -129,7 +158,7 @@ const Auth: NextPage = () => {
                   <Formik
                     initialValues={signUpValues}
                     validationSchema={signUpSchema}
-                    onSubmit={console.log}
+                    onSubmit={signUpUsingEmailAndPassword}
                   >
                     {({ touched, errors }) => {
                       return (
@@ -173,7 +202,13 @@ const Auth: NextPage = () => {
                           </Field>
 
                           <ButtonGroup w="100%" justifyContent={"end"}>
-                            <Button colorScheme="green">Sign up</Button>
+                            <Button
+                              type="submit"
+                              colorScheme="custom.primary"
+                              isLoading={signUpLoading}
+                            >
+                              Sign up
+                            </Button>
                           </ButtonGroup>
                         </Form>
                       );
@@ -184,6 +219,27 @@ const Auth: NextPage = () => {
             </Tabs>
 
             <Divider my={5} />
+
+            <Button
+              type="button"
+              w={"100%"}
+              mb="3"
+              gap={3}
+              alignItems={"center"}
+              isLoading={googleAuthLoading}
+              onClick={signInWithGoogle}
+            >
+              <>
+                <FcGoogle size={20} />
+                Signin with Google
+              </>
+            </Button>
+
+            {/* For testing purpose only */}
+            {/* <Button type="button" w={"100%"} onClick={logout}>
+              Logout
+            </Button> */}
+            {/* END */}
           </Box>
         </GridItem>
       </Grid>
