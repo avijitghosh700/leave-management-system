@@ -24,7 +24,7 @@ import {
 import { Field, FieldProps, Form, Formik, FormikValues } from "formik";
 import * as Yup from "yup";
 
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../shared/context/AuthContext";
 
 import { FcGoogle } from "react-icons/fc";
 
@@ -49,14 +49,17 @@ const signUpSchema = Yup.object().shape({
 
 const Auth: NextPage = () => {
   const {
+    user,
+    isLoggedIn,
+    loading,
+    signInLoading,
+    signUpLoading,
+    googleAuthLoading,
+    error,
     signInWithGoogle,
     signInWithPassword,
     signUpWithPassword,
     logout,
-    signInLoading,
-    signUpLoading,
-    googleAuthLoading,
-    user,
   } = useAuth();
 
   const [signInValues /*setSignInValues*/] = React.useState<FormikValues>({
@@ -78,9 +81,9 @@ const Auth: NextPage = () => {
     signUpWithPassword(credentials);
   };
 
-  React.useEffect(() => {
-    console.log(user);
-  }, [user]);
+  // React.useEffect(() => {
+  //   console.log(user, error, isLoggedIn);
+  // }, [user, error, isLoggedIn]);
 
   return (
     <Flex as="section" h={"100%"} minH={450} className={`${AuthStyles.Auth}`}>
@@ -144,6 +147,7 @@ const Auth: NextPage = () => {
                               type="submit"
                               colorScheme="custom.primary"
                               isLoading={signInLoading}
+                              disabled={loading}
                             >
                               Sign in
                             </Button>
@@ -206,6 +210,7 @@ const Auth: NextPage = () => {
                               type="submit"
                               colorScheme="custom.primary"
                               isLoading={signUpLoading}
+                              disabled={loading}
                             >
                               Sign up
                             </Button>
@@ -223,10 +228,10 @@ const Auth: NextPage = () => {
             <Button
               type="button"
               w={"100%"}
-              mb="3"
               gap={3}
               alignItems={"center"}
               isLoading={googleAuthLoading}
+              disabled={loading}
               onClick={signInWithGoogle}
             >
               <>
@@ -234,12 +239,6 @@ const Auth: NextPage = () => {
                 Signin with Google
               </>
             </Button>
-
-            {/* For testing purpose only */}
-            {/* <Button type="button" w={"100%"} onClick={logout}>
-              Logout
-            </Button> */}
-            {/* END */}
           </Box>
         </GridItem>
       </Grid>

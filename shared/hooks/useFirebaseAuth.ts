@@ -9,24 +9,31 @@ import {
   signOut,
 } from 'firebase/auth';
 
-import { auth } from "../firebase.config";
+import { auth } from "../../firebase.config";
 
 import authAdapter, { Auth } from "../models/auth.model";
+import { useToast } from "@chakra-ui/react";
 
 const useFirebaseAuth = () => {
   const [user, setUser] = React.useState<Auth | null>(null);
-
+  
+  const [isLoggedIn, setIsLoggedIn] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [signInLoading, setSignInLoadingLoading] = React.useState<boolean>(false);
   const [signUpLoading, setSignUpLoadingLoading] = React.useState<boolean>(false);
   const [googleAuthLoading, setGoogleAuthLoadingLoading] = React.useState<boolean>(false);
+  
+  const [error, setError] = React.useState<string | null>(null);
+
+  const toast = useToast();
 
   const authStateChanged = async (authState: any) => {
-    setLoading(true)
+    setLoading(true);
 
     if (!authState) {
-      setUser(null)
-      setLoading(false)
+      setUser(null);
+      setIsLoggedIn(false);
+      setLoading(false);
       return;
     }
 
@@ -35,8 +42,10 @@ const useFirebaseAuth = () => {
 
       accessToken && setUser(() => authAdapter(authState, accessToken));
       setLoading(false);
-    } catch (error) {
+      setIsLoggedIn(true);
+    } catch (error: any) {
       setUser(null);
+      setIsLoggedIn(false);
       setLoading(false);
     }
   }
@@ -51,11 +60,21 @@ const useFirebaseAuth = () => {
 
       accessToken && setUser(() => authAdapter(authUser.user, accessToken));
       setLoading(false);
+      setError(null);
       setSignUpLoadingLoading(false);
-    } catch (error) {
+    } catch (error: any) {
+      setError(error.code);
       setUser(null);
       setLoading(false);
       setSignUpLoadingLoading(false);
+
+      toast({
+        title: error.code,
+        status: 'error',
+        position: 'top',
+        duration: 2000,
+        isClosable: true,
+      });
     }
   }
 
@@ -69,11 +88,21 @@ const useFirebaseAuth = () => {
 
       accessToken && setUser(() => authAdapter(authUser.user, accessToken));
       setLoading(false);
+      setError(null);
       setSignInLoadingLoading(false);
-    } catch (error) {
+    } catch (error: any) {
+      setError(error.code);
       setUser(null);
       setLoading(false);
       setSignInLoadingLoading(false);
+
+      toast({
+        title: error.code,
+        status: 'error',
+        position: 'top',
+        duration: 2000,
+        isClosable: true,
+      });
     }
   }
 
@@ -89,11 +118,21 @@ const useFirebaseAuth = () => {
 
       accessToken && setUser(() => authAdapter(authUser.user, accessToken));
       setLoading(false);
+      setError(null);
       setGoogleAuthLoadingLoading(false);
-    } catch (error) {
+    } catch (error: any) {
+      setError(error.code);
       setUser(null);
       setLoading(false);
       setGoogleAuthLoadingLoading(false);
+
+      toast({
+        title: error.code,
+        status: 'error',
+        position: 'top',
+        duration: 2000,
+        isClosable: true,
+      });
     }
   }
 
@@ -107,10 +146,12 @@ const useFirebaseAuth = () => {
 
   return {
     user,
+    isLoggedIn,
     loading,
-    signInLoading,
     signUpLoading,
+    signInLoading,
     googleAuthLoading,
+    error,
     signUpWithPassword,
     signInWithPassword,
     signInWithGoogle,
