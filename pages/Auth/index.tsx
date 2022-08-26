@@ -49,17 +49,13 @@ const signUpSchema = Yup.object().shape({
 
 const Auth: NextPage = () => {
   const {
-    user,
-    isLoggedIn,
     loading,
     signInLoading,
     signUpLoading,
     googleAuthLoading,
-    error,
     signInWithGoogle,
     signInWithPassword,
     signUpWithPassword,
-    logout,
   } = useAuth();
 
   const [signInValues /*setSignInValues*/] = React.useState<FormikValues>({

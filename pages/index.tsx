@@ -1,17 +1,23 @@
-import type { NextPage } from 'next';
+import type { NextPage } from "next";
 
-// import Auth from './Auth';
-import Dashboard from './Dashboard';
+import Header from "../shared/components/layout/Header/Header";
+import Dashboard from "./Dashboard";
 
 import "../firebase.config";
+import { useAuth } from "../shared/context/AuthContext";
 
 const Home: NextPage = () => {
+  const { isLoggedIn } = useAuth();
 
   return (
-    <main className="main">
-      <Dashboard/>
-    </main>
-  )
-}
+    <>
+      {isLoggedIn && <Header/>}
 
-export default Home
+      <main className="main">
+        <Dashboard />
+      </main>
+    </>
+  );
+};
+
+export default Home;

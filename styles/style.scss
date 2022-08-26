@@ -4,6 +4,7 @@
 html,
 body {
   height: 100%;
+  position: relative;
 }
 
 main.main {
@@ -20,3 +21,12 @@ main.main {
 //     }
 //   }
 // }
+
+// Chakra UI customization
+.chakra-button {
+  &:is(.chakra-menu__menu-button) > * {
+    @include flexAlign(center, center);
+    gap: 10px;
+  }
+}
+// END

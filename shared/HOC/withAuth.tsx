@@ -6,7 +6,7 @@ import { useAuth } from "../context/AuthContext";
 const withAuth = (Component: NextComponentType) => {
   const _Auth = (props: any) => {
     const { isLoggedIn } = useAuth();
-    console.log(isLoggedIn);
+    // console.log(isLoggedIn);
     
     // If user is not logged in, return login component
     if (!isLoggedIn) {

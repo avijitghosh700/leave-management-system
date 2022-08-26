@@ -1,19 +1,15 @@
 import { NextPage } from "next";
 import React from "react";
 
-import { Button } from "@chakra-ui/react";
+import { Box, Button, CircularProgress, CircularProgressLabel } from "@chakra-ui/react";
 
 import withAuth from "../../shared/HOC/withAuth";
 import { useAuth } from "../../shared/context/AuthContext";
 
-const Dashboard: NextPage = () => {
-  const { logout } = useAuth();
+import dashboardStyle from "./Dashboard.module.scss";
 
-  return (
-    <Button type="button" m={3} onClick={logout}>
-      Logout
-    </Button>
-  );
+const Dashboard: NextPage = () => {
+  return <Box as="section" className={`${dashboardStyle.Dashboard}`}></Box>;
 };
 
 export default withAuth(Dashboard);
