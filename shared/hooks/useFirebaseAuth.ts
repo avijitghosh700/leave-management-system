@@ -7,22 +7,22 @@ import {
   signInWithPopup,
   onAuthStateChanged,
   signOut,
-} from 'firebase/auth';
-
-import { auth } from "../../firebase.config";
+} from "firebase/auth";
 
 import authAdapter, { Auth } from "../models/auth.model";
 import { useToast } from "@chakra-ui/react";
 
+import { auth } from "../../firebase.config";
+
 const useFirebaseAuth = () => {
   const [user, setUser] = React.useState<Auth | null>(null);
-  
+
   const [isLoggedIn, setIsLoggedIn] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(false);
   const [signInLoading, setSignInLoadingLoading] = React.useState<boolean>(false);
   const [signUpLoading, setSignUpLoadingLoading] = React.useState<boolean>(false);
   const [googleAuthLoading, setGoogleAuthLoadingLoading] = React.useState<boolean>(false);
-  
+
   const [error, setError] = React.useState<string | null>(null);
 
   const toast = useToast();
@@ -48,15 +48,15 @@ const useFirebaseAuth = () => {
       setIsLoggedIn(false);
       setLoading(false);
     }
-  }
+  };
 
   const signUpWithPassword = async ({ email, password }: Record<string, string>) => {
     setLoading(true);
     setSignUpLoadingLoading(true);
 
     try {
-      const authUser = await createUserWithEmailAndPassword(auth, email, password)
-      const accessToken: string = authUser && await authUser.user.getIdToken();
+      const authUser = await createUserWithEmailAndPassword(auth, email, password);
+      const accessToken: string = authUser && (await authUser.user.getIdToken());
 
       accessToken && setUser(() => authAdapter(authUser.user, accessToken));
       setLoading(false);
@@ -70,21 +70,21 @@ const useFirebaseAuth = () => {
 
       toast({
         title: error.code,
-        status: 'error',
-        position: 'top',
+        status: "error",
+        position: "top",
         duration: 2000,
         isClosable: true,
       });
     }
-  }
+  };
 
   const signInWithPassword = async ({ email, password }: Record<string, string>) => {
     setLoading(true);
     setSignInLoadingLoading(true);
 
     try {
-      const authUser = await signInWithEmailAndPassword(auth, email, password)
-      const accessToken: string = authUser && await authUser.user.getIdToken();
+      const authUser = await signInWithEmailAndPassword(auth, email, password);
+      const accessToken: string = authUser && (await authUser.user.getIdToken());
 
       accessToken && setUser(() => authAdapter(authUser.user, accessToken));
       setLoading(false);
@@ -98,13 +98,13 @@ const useFirebaseAuth = () => {
 
       toast({
         title: error.code,
-        status: 'error',
-        position: 'top',
+        status: "error",
+        position: "top",
         duration: 2000,
         isClosable: true,
       });
     }
-  }
+  };
 
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
@@ -114,7 +114,7 @@ const useFirebaseAuth = () => {
 
     try {
       const authUser = await signInWithPopup(auth, provider);
-      const accessToken: string = authUser && await authUser.user.getIdToken();
+      const accessToken: string = authUser && (await authUser.user.getIdToken());
 
       accessToken && setUser(() => authAdapter(authUser.user, accessToken));
       setLoading(false);
@@ -128,13 +128,13 @@ const useFirebaseAuth = () => {
 
       toast({
         title: error.code,
-        status: 'error',
-        position: 'top',
+        status: "error",
+        position: "top",
         duration: 2000,
         isClosable: true,
       });
     }
-  }
+  };
 
   const logout = () => signOut(auth);
 
@@ -155,8 +155,8 @@ const useFirebaseAuth = () => {
     signUpWithPassword,
     signInWithPassword,
     signInWithGoogle,
-    logout
+    logout,
   };
-}
+};
 
 export default useFirebaseAuth;

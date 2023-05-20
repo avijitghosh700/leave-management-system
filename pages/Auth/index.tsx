@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   ButtonGroup,
+  Card,
   Divider,
   Flex,
   FormControl,
@@ -14,6 +15,7 @@ import {
   GridItem,
   Image,
   Input,
+  LightMode,
   Tab,
   TabList,
   TabPanel,
@@ -84,7 +86,7 @@ const Auth: NextPage = () => {
   return (
     <Flex as="section" h={"100%"} minH={450} className={`${AuthStyles.Auth}`}>
       <Box className={`${AuthStyles.Auth__kite}`}>
-        <Image src="kite-bg-01.svg" />
+        <Image src="kite-bg-01.svg" alt="Background" />
       </Box>
 
       <Grid
@@ -98,7 +100,7 @@ const Auth: NextPage = () => {
         px={3}
       >
         <GridItem w={"100%"}>
-          <Box className={`${AuthStyles.Auth__formWrapper}`} mx="auto">
+          <Card className={`${AuthStyles.Auth__formWrapper}`} mx="auto">
             <Tabs isFitted colorScheme={"custom.primary"}>
               <TabList>
                 <Tab fontWeight={500}>Sign in</Tab>
@@ -139,14 +141,16 @@ const Auth: NextPage = () => {
                           </Field>
 
                           <ButtonGroup w="100%" justifyContent={"end"}>
-                            <Button
-                              type="submit"
-                              colorScheme="custom.primary"
-                              isLoading={signInLoading}
-                              disabled={loading}
-                            >
-                              Sign in
-                            </Button>
+                            <LightMode>
+                              <Button
+                                type="submit"
+                                colorScheme="custom.primary"
+                                isLoading={signInLoading}
+                                isDisabled={loading}
+                              >
+                                Sign in
+                              </Button>
+                            </LightMode>
                           </ButtonGroup>
                         </Form>
                       );
@@ -202,14 +206,16 @@ const Auth: NextPage = () => {
                           </Field>
 
                           <ButtonGroup w="100%" justifyContent={"end"}>
-                            <Button
-                              type="submit"
-                              colorScheme="custom.primary"
-                              isLoading={signUpLoading}
-                              disabled={loading}
-                            >
-                              Sign up
-                            </Button>
+                            <LightMode>
+                              <Button
+                                type="submit"
+                                colorScheme="custom.primary"
+                                isLoading={signUpLoading}
+                                isDisabled={loading}
+                              >
+                                Sign up
+                              </Button>
+                            </LightMode>
                           </ButtonGroup>
                         </Form>
                       );
@@ -227,7 +233,7 @@ const Auth: NextPage = () => {
               gap={3}
               alignItems={"center"}
               isLoading={googleAuthLoading}
-              disabled={loading}
+              isDisabled={loading}
               onClick={signInWithGoogle}
             >
               <>
@@ -235,7 +241,7 @@ const Auth: NextPage = () => {
                 Signin with Google
               </>
             </Button>
-          </Box>
+          </Card>
         </GridItem>
       </Grid>
     </Flex>

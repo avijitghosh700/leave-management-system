@@ -1,8 +1,14 @@
 import { extendTheme } from "@chakra-ui/react";
 
-import vars from '../styles/_var.module.scss';
+import vars from "../styles/_var.module.scss";
+
+const config = {
+  initialColorMode: "light",
+  useSystemColorMode: false,
+};
 
 const theme = extendTheme({
+  config,
   colors: {
     custom: {
       primary: {
@@ -10,7 +16,7 @@ const theme = extendTheme({
          * 500 - Base state
          * 600 - Hover state
          * 700 - Active state
-        */
+         */
 
         500: vars.primaryBtn,
         600: vars.primaryBtnHover,

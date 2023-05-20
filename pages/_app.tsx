@@ -1,5 +1,5 @@
 import type { AppProps } from "next/app";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 
 import AuthContextProvider from "../shared/context/AuthContext";
 
@@ -11,6 +11,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <AuthContextProvider>
       <ChakraProvider theme={theme}>
         <Component {...pageProps} />
+        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
       </ChakraProvider>
     </AuthContextProvider>
   );
